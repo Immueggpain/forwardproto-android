@@ -112,7 +112,7 @@ public class Launcher {
 			settings.password = cmd.getOptionValue(password);
 			settings.logfile = cmd.getOptionValue(log, "smartproxy.log");
 			try {
-				new Smartproxy().run(settings);
+				new Smartproxy(resources).run(settings);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
