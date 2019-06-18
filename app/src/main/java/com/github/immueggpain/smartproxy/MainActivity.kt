@@ -29,7 +29,9 @@ class MainActivity : AppCompatActivity() {
             settings.server_port = Integer.parseInt(etServerPort.text.toString())
             settings.password = etPassword.text.toString()
             settings.logfile = this.filesDir.resolve("smartproxy.log").absolutePath
-            Smartproxy(resources).run(settings)
+            Thread(Runnable {
+                Smartproxy(resources).run(settings)
+            }).start()
         } catch (e: Exception) {
             e.printStackTrace()
         }
