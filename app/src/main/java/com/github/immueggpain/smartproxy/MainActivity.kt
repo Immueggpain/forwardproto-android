@@ -1,39 +1,88 @@
 package com.github.immueggpain.smartproxy
 
+import android.content.Context
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import android.widget.EditText
+import android.widget.TextView
+import com.google.gson.Gson
 
 class MainActivity : AppCompatActivity() {
+
+    private var thread: Thread? = null
+    private var etLocalIp: EditText? = null
+    private var etLocalPort: EditText? = null
+    private var etServerIp: EditText? = null
+    private var etServerPort: EditText? = null
+    private var etPassword: EditText? = null
+    private var tvStatus: TextView? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+        etLocalIp = findViewById(R.id.localIp)
+        etLocalPort = findViewById(R.id.localPort)
+        etServerIp = findViewById(R.id.serverIp)
+        etServerPort = findViewById(R.id.serverPort)
+        etPassword = findViewById(R.id.password)
+        tvStatus = findViewById(R.id.tvStatus)
+
+        val sharedPref = getPreferences(Context.MODE_PRIVATE) ?: return
+        val jsonStr: String? = sharedPref.getString("json", null)
+        if (jsonStr != null) {
+            val settings = Gson().fromJson(jsonStr!!, Launcher.ClientSettings::class.java)
+            etLocalIp?.setText(settings.local_listen_ip)
+            etLocalPort?.setText(settings.local_listen_port.toString())
+            etServerIp?.setText(settings.server_ip)
+            etServerPort?.setText(settings.server_port.toString())
+            etPassword?.setText(settings.password)
+        }
     }
 
     /** Called when the user touches the button */
     fun startProxy(view: View) {
         try {
-            val etLocalIp: EditText = findViewById(R.id.localIp)
-            val etLocalPort: EditText = findViewById(R.id.localPort)
-            val etServerIp: EditText = findViewById(R.id.serverIp)
-            val etServerPort: EditText = findViewById(R.id.serverPort)
-            val etPassword: EditText = findViewById(R.id.password)
+            if (!updateStatus()) {
+                val settings = Launcher.ClientSettings()
+                settings.local_listen_ip = etLocalIp!!.text.toString()
+                settings.local_listen_port = Integer.parseInt(etLocalPort!!.text.toString())
+                settings.server_ip = etServerIp!!.text.toString()
+                settings.server_port = Integer.parseInt(etServerPort!!.text.toString())
+                settings.password = etPassword!!.text.toString()
+                settings.logfile = this.filesDir.resolve("smartproxy.log").absolutePath
 
-            // run sp client
-            val settings = Launcher.ClientSettings()
-            settings.local_listen_ip = etLocalIp.text.toString()
-            settings.local_listen_port = Integer.parseInt(etLocalPort.text.toString())
-            settings.server_ip = etServerIp.text.toString()
-            settings.server_port = Integer.parseInt(etServerPort.text.toString())
-            settings.password = etPassword.text.toString()
-            settings.logfile = this.filesDir.resolve("smartproxy.log").absolutePath
-            Thread(Runnable {
-                Smartproxy(resources).run(settings)
-            }).start()
+                // save config
+                val sharedPref = getPreferences(Context.MODE_PRIVATE) ?: return
+                with(sharedPref.edit()) {
+                    putString("json", Gson().toJson(settings))
+                    commit()
+                }
+
+                thread = Thread(Runnable {
+                    Smartproxy(resources).run(settings)
+                })
+                thread!!.start()
+                updateStatus()
+            }
         } catch (e: Exception) {
             e.printStackTrace()
+        }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        updateStatus()
+    }
+
+    private fun updateStatus(): Boolean {
+        if (thread?.isAlive == true) {
+            tvStatus!!.text = "running"
+            return true
+        } else {
+            tvStatus!!.text = "stopped"
+            return false
         }
     }
 }
