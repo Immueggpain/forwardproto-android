@@ -28,8 +28,8 @@ class MainActivity : AppCompatActivity() {
             settings.server_ip = etServerIp.text.toString()
             settings.server_port = Integer.parseInt(etServerPort.text.toString())
             settings.password = etPassword.text.toString()
-            settings.logfile = "smartproxy.log"
-            Smartproxy().run(settings)
+            settings.logfile = this.filesDir.resolve("smartproxy.log").absolutePath
+            Smartproxy(resources).run(settings)
         } catch (e: Exception) {
             e.printStackTrace()
         }

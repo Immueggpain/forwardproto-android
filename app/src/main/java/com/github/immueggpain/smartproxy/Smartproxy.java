@@ -27,7 +27,6 @@ import java.io.BufferedInputStream;
 import java.io.BufferedWriter;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
-import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -46,8 +45,6 @@ import java.net.SocketTimeoutException;
 import java.net.URI;
 import java.net.UnknownHostException;
 import java.nio.charset.StandardCharsets;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -66,6 +63,7 @@ import javax.net.ssl.SSLContext;
 import javax.net.ssl.SSLSocket;
 import javax.net.ssl.SSLSocketFactory;
 
+import android.content.res.Resources;
 import org.apache.commons.collections4.MapIterator;
 import org.apache.commons.collections4.multimap.ArrayListValuedHashMap;
 import org.apache.commons.io.IOUtils;
@@ -138,6 +136,11 @@ public class Smartproxy {
 	private NavigableMap<Long, IpRange> ip_to_nn;
 	private ConnPool socketPool;
 	private SpeedMeter speedMeter;
+	private Resources resources;
+
+	public Smartproxy(Resources resources){
+		this.resources = resources;
+	}
 
 	public void run(ClientSettings settings) throws Exception {
 		this.settings = settings;
@@ -1274,8 +1277,7 @@ public class Smartproxy {
 	private void load_domain_nn_table() throws Exception {
 		domain_to_nn = new HashMap<>();
 		ip_to_nn = new TreeMap<>();
-		Path path = Paths.get("user.rule");
-		try (BOMInputStream is = new BOMInputStream(new FileInputStream(path.toFile()))) {
+		try (BOMInputStream is = new BOMInputStream(null)) {
 			for (String line : IOUtils.readLines(is, sc.utf8)) {
 				line = line.trim();
 				if (line.isEmpty())
