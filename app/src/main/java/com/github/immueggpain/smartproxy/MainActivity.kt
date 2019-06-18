@@ -23,11 +23,11 @@ class MainActivity : AppCompatActivity() {
 
             // run sp client
             val settings = Launcher.ClientSettings()
-            settings.local_listen_ip = "127.0.0.1"
-            settings.local_listen_port = Integer.parseInt(cmd.getOptionValue(local_listen_port, "1083"))
-            settings.server_ip = cmd.getOptionValue(server_ip)
-            settings.server_port = Integer.parseInt(cmd.getOptionValue(server_port))
-            settings.password = cmd.getOptionValue(password)
+            settings.local_listen_ip = etLocalIp.text.toString()
+            settings.local_listen_port = Integer.parseInt(etLocalPort.text.toString())
+            settings.server_ip = etServerIp.text.toString()
+            settings.server_port = Integer.parseInt(etServerPort.text.toString())
+            settings.password = etPassword.text.toString()
             settings.logfile = "smartproxy.log"
             Smartproxy().run(settings)
         } catch (e: Exception) {
