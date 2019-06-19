@@ -19,7 +19,7 @@ before_deploy:
     - pwd
 deploy:
     provider: script
-    script: python3 githubrelease.py "app/build/outputs/apk/release/app-release.apk"
+    script: python3 githubrelease.py "app/build/outputs/apk/release/forwardproto-android-$TRAVIS_TAG.apk"
     skip_cleanup: true
     on:
         tags: true
