@@ -5,6 +5,9 @@ android:
         - android-29
 before_install:
     - sudo apt-get install -y python3-pip
+after_success:
+    - pwd
+    - ls ./app/release
 before_deploy:
     # create some env vars
     - PROJ_VERSION=$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout)
