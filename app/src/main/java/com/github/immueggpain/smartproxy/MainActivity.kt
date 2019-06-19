@@ -34,7 +34,7 @@ class MainActivity : AppCompatActivity() {
         val sharedPref = getPreferences(Context.MODE_PRIVATE) ?: return
         val jsonStr: String? = sharedPref.getString("json", null)
         if (jsonStr != null) {
-            val settings = Gson().fromJson(jsonStr!!, Launcher.ClientSettings::class.java)
+            val settings = Gson().fromJson(jsonStr, Launcher.ClientSettings::class.java)
             etLocalIp?.setText(settings.local_listen_ip)
             etLocalPort?.setText(settings.local_listen_port.toString())
             etServerIp?.setText(settings.server_ip)
@@ -44,6 +44,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     /** Called when the user touches the button */
+    @Suppress("UNUSED_PARAMETER")
     fun startProxy(view: View) {
         try {
             if (!updateStatus()) {
