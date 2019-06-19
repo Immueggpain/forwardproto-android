@@ -15,10 +15,24 @@ android {
         versionName "1.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
+    def isRunningOnTravis = System.getenv("CI") == "true"
+    signingConfigs {
+        if (isRunningOnTravis) {
+            release {
+                storeFile file("../OurStore.keystore")
+                storePassword System.getenv("keystore_password")
+                keyAlias System.getenv("keystore_alias")
+                keyPassword System.getenv("keystore_alias_password")
+            }
+        }
+    }
     buildTypes {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            if (isRunningOnTravis) {
+                signingConfig signingConfigs.release
+            }
         }
     }
     compileOptions {
