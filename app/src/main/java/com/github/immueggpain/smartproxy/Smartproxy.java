@@ -1201,7 +1201,7 @@ public class Smartproxy {
 
     private class TunnelPool {
 
-        private BlockingQueue<SocketBundle> halfTunnels = new ArrayBlockingQueue<>(40);
+        private BlockingQueue<SocketBundle> halfTunnels = new ArrayBlockingQueue<>(20);
         private String server_hostname;
         private int server_port;
 
