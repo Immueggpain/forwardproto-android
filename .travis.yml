@@ -5,6 +5,9 @@ android:
         - android-29
 before_install:
     - sudo apt-get install -y python3-pip
+    # download citools scripts
+    - wget https://raw.githubusercontent.com/Immueggpain/citools/master/decodebase64env.py
+    - python3 decodebase64env.py "KEYSTORE" "android.jks"
 after_success:
     - pwd
     - ls ./app/release
@@ -14,7 +17,7 @@ before_deploy:
     - ARTIFACTID=$(mvn help:evaluate -Dexpression=project.artifactId -q -DforceStdout)
     # install PyGithub
     - sudo pip3 install PyGithub
-    # download githubrelease.py
+    # download citools scripts
     - wget https://raw.githubusercontent.com/Immueggpain/citools/master/githubrelease.py
     - pwd
 deploy:
