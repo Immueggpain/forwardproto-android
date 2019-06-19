@@ -1345,8 +1345,6 @@ public class Smartproxy {
             DIRECT, PROXY, BAN
         }
 
-        ;
-
         public final Type type;
 
         public NextNode(Type type, Proxy next_node) {
