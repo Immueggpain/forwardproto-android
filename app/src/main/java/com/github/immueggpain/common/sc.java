@@ -285,10 +285,6 @@ public final class sc {
 		return li;
 	}
 
-	public static <T> Iterable<T> getIterable(Stream<T> stream) {
-		return stream::iterator;
-	}
-
 	public static boolean equals(Object a, Object b) {
 		if (a == null)
 			return b == null;
