@@ -1,4 +1,7 @@
 language: android
+android:
+    - build-tools-29.0.0
+    - android-29
 before_install:
     - sudo apt-get install -y python3-pip
 before_deploy:
