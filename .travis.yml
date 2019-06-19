@@ -10,11 +10,8 @@ before_install:
     - python3 decodebase64env.py "KEYSTORE" "android.jks"
 after_success:
     - pwd
-    - ls ./app/build/outputs/apk/release
+    - mv app/build/outputs/apk/release/app-release.apk app/build/outputs/apk/release/forwardproto-android-$TRAVIS_TAG.apk
 before_deploy:
-    # create some env vars
-    - PROJ_VERSION=$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout)
-    - ARTIFACTID=$(mvn help:evaluate -Dexpression=project.artifactId -q -DforceStdout)
     # install PyGithub
     - sudo pip3 install PyGithub
     # download citools scripts
