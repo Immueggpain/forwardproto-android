@@ -10,7 +10,7 @@ before_install:
     - python3 decodebase64env.py "KEYSTORE" "android.jks"
 after_success:
     - pwd
-    - ls ./app/release
+    - ls ./app/build/outputs/apk/release
 before_deploy:
     # create some env vars
     - PROJ_VERSION=$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout)
