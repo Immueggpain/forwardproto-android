@@ -19,7 +19,7 @@ android {
     signingConfigs {
         if (isRunningOnTravis) {
             release {
-                storeFile file("android.jks")
+                storeFile file("../android.jks")
                 storePassword System.getenv("KS_PSWD")
                 keyAlias System.getenv("KS_ALIAS")
                 keyPassword System.getenv("KS_ALIAS_PSWD")
