@@ -23,11 +23,13 @@
  *******************************************************************************/
 package com.github.immueggpain.common;
 
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.PrintStream;
-import java.io.UnsupportedEncodingException;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import org.apache.commons.codec.DecoderException;
+import org.apache.commons.codec.binary.Hex;
+import org.apache.commons.io.IOUtils;
+
+import java.io.*;
 import java.lang.reflect.Array;
 import java.lang.reflect.Field;
 import java.math.BigInteger;
@@ -37,19 +39,13 @@ import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+import java.util.Random;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import java.util.stream.Stream;
-import java.util.Random;
 
-import org.apache.commons.codec.DecoderException;
-import org.apache.commons.codec.binary.Hex;
-import org.apache.commons.io.IOUtils;
-
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-
-/** sc = shortcut */
+/**
+ * sc = shortcut
+ */
 public final class sc {
 
 	public static final Charset utf8 = StandardCharsets.UTF_8;
@@ -76,7 +72,9 @@ public final class sc {
 		return new String(b, offset, length, utf8);
 	}
 
-	/** big endian byte array to unsigned short array */
+	/**
+	 * big endian byte array to unsigned short array
+	 */
 	public static int[] b2ushort(byte[] b, int len) {
 		int hlen = len / 2;
 		int[] h = new int[hlen];
@@ -85,12 +83,16 @@ public final class sc {
 		return h;
 	}
 
-	/** [a-zA-Z_0-9]+ */
+	/**
+	 * [a-zA-Z_0-9]+
+	 */
 	public static boolean isWord(String s) {
 		return s.matches("\\w+");
 	}
 
-	/** better use SystemUtils.IS_OS_XXXXX */
+	/**
+	 * better use SystemUtils.IS_OS_XXXXX
+	 */
 	public static String getOS() {
 		return System.getProperty("os.name");
 	}
@@ -104,9 +106,8 @@ public final class sc {
 
 	/**
 	 * wait for process terminated and return 1&2&exitValue in strings.
-	 * 
-	 * @param print
-	 *            if true, print command
+	 *
+	 * @param print if true, print command
 	 */
 	public static ExecCmdRet execCommandR(String command, boolean print) throws IOException, InterruptedException {
 		if (print)
@@ -120,14 +121,18 @@ public final class sc {
 		return r;
 	}
 
-	/** just exec, don't wait */
+	/**
+	 * just exec, don't wait
+	 */
 	public static Process execCommandAsync(String command) throws IOException, InterruptedException {
 		System.out.println("exec: " + command);
 		Process pro = Runtime.getRuntime().exec(command);
 		return pro;
 	}
 
-	/** just exec, don't wait */
+	/**
+	 * just exec, don't wait
+	 */
 	public static Process execCommandAsync(String... command) throws IOException, InterruptedException {
 		System.out.println("exec: " + command);
 		Process pro = Runtime.getRuntime().exec(command);
@@ -190,12 +195,16 @@ public final class sc {
 		return randomStr(bits, new SecureRandom());
 	}
 
-	/** base32, which is 5 bit per char */
+	/**
+	 * base32, which is 5 bit per char
+	 */
 	public static String randomStr(int bits, Random random) {
 		return new BigInteger(bits, random).toString(32);
 	}
 
-	/** print object like json style. no inherited fields, no recursion */
+	/**
+	 * print object like json style. no inherited fields, no recursion
+	 */
 	public static String toString(Object o) {
 		StringBuilder sb = new StringBuilder();
 		sb.append('{');
@@ -234,12 +243,16 @@ public final class sc {
 	final protected static char[] hexArrayUp = "0123456789ABCDEF".toCharArray();
 	final protected static char[] hexArrayLow = "0123456789abcdef".toCharArray();
 
-	/** byte[] to hex string lower case */
+	/**
+	 * byte[] to hex string lower case
+	 */
 	public static String b2hex(byte[] bytes) {
 		return b2hex(bytes, 0, bytes.length);
 	}
 
-	/** byte[] to hex string lower case */
+	/**
+	 * byte[] to hex string lower case
+	 */
 	public static String b2hex(byte[] bytes, int offset, int length) {
 		char[] hexChars = new char[length * 2];
 		for (int j = offset; j < length; j++) {
@@ -252,7 +265,7 @@ public final class sc {
 
 	/**
 	 * hex string lower case to byte[]
-	 * 
+	 *
 	 * @throws DecoderException
 	 */
 	public static byte[] hex2b(String hex) throws DecoderException {
@@ -265,7 +278,9 @@ public final class sc {
 		return language;
 	}
 
-	/** find 1st capture */
+	/**
+	 * find 1st capture
+	 */
 	public static String match(String regex, String input) {
 		Pattern p = Pattern.compile(regex);
 		Matcher m = p.matcher(input);
@@ -273,7 +288,9 @@ public final class sc {
 		return m.group(1);
 	}
 
-	/** find 1st capture */
+	/**
+	 * find 1st capture
+	 */
 	public static List<String> capture(String regex, String input) {
 		Pattern p = Pattern.compile(regex);
 		Matcher m = p.matcher(input);
@@ -291,7 +308,9 @@ public final class sc {
 		return a.equals(b);
 	}
 
-	/** if o==null, return ""; otherwise return o.toString(). */
+	/**
+	 * if o==null, return ""; otherwise return o.toString().
+	 */
 	public static String stringOrEmpty(Object o) {
 		if (o == null)
 			return "";
