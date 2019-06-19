@@ -4,19 +4,20 @@ import android.content.Context
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
+import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
 import com.google.gson.Gson
 
 class MainActivity : AppCompatActivity() {
 
-    private var thread: Thread? = null
     private var etLocalIp: EditText? = null
     private var etLocalPort: EditText? = null
     private var etServerIp: EditText? = null
     private var etServerPort: EditText? = null
     private var etPassword: EditText? = null
     private var tvStatus: TextView? = null
+    private var button: Button? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -28,6 +29,7 @@ class MainActivity : AppCompatActivity() {
         etServerPort = findViewById(R.id.serverPort)
         etPassword = findViewById(R.id.password)
         tvStatus = findViewById(R.id.tvStatus)
+        button = findViewById(R.id.button)
 
         val sharedPref = getPreferences(Context.MODE_PRIVATE) ?: return
         val jsonStr: String? = sharedPref.getString("json", null)
@@ -60,10 +62,10 @@ class MainActivity : AppCompatActivity() {
                     commit()
                 }
 
-                thread = Thread(Runnable {
+                (application as MyApplication).thread = Thread(Runnable {
                     Smartproxy(resources).run(settings)
                 })
-                thread!!.start()
+                (application as MyApplication).thread!!.start()
                 updateStatus()
             }
         } catch (e: Exception) {
@@ -77,12 +79,14 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun updateStatus(): Boolean {
-        if (thread?.isAlive == true) {
+        return if ((application as MyApplication).thread?.isAlive == true) {
             tvStatus!!.text = "running"
-            return true
+            button!!.isEnabled = false
+            true
         } else {
             tvStatus!!.text = "stopped"
-            return false
+            button!!.isEnabled = true
+            false
         }
     }
 }
