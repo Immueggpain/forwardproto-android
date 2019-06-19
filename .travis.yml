@@ -1,8 +1,8 @@
 language: android
 dist: xenial
 android:
-    - build-tools-29.0.0
-    - android-29
+    - build-tools-28.0.3
+    - android-28
 before_install:
     - sudo apt-get install -y python3-pip
 before_deploy:
