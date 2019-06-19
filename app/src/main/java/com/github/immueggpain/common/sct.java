@@ -30,17 +30,25 @@ import java.util.Date;
 import java.util.TimeZone;
 import java.util.function.Function;
 
+import android.annotation.TargetApi;
+import android.os.Build;
 import org.apache.commons.math3.util.Precision;
 
-/** sct = shortcut for time & date */
+/**
+ * sct = shortcut for time & date
+ */
 public final class sct {
 
-	/** seconds, between the current time and midnight, January 1, 1970 UTC */
+	/**
+	 * seconds, between the current time and midnight, January 1, 1970 UTC
+	 */
 	public static long time_s() {
 		return System.currentTimeMillis() / 1000;
 	}
 
-	/** milliseconds, between the current time and midnight, January 1, 1970 UTC */
+	/**
+	 * milliseconds, between the current time and midnight, January 1, 1970 UTC
+	 */
 	public static long time_ms() {
 		return System.currentTimeMillis();
 	}
@@ -67,7 +75,9 @@ public final class sct {
 		return datetime(time_ms, pattern, TimeZone.getTimeZone(timeZoneID));
 	}
 
-	/** format time_ms to string */
+	/**
+	 * format time_ms to string
+	 */
 	public static String datetime(long time_ms, String pattern, TimeZone timeZone) {
 		SimpleDateFormat sdf = new SimpleDateFormat(pattern);
 		sdf.setTimeZone(timeZone);
@@ -99,19 +109,25 @@ public final class sct {
 		return datetime("yyyy-MM-dd HH-mm-ss", "Asia/Shanghai");
 	}
 
-	/** convert string to utc seconds */
+	/**
+	 * convert string to utc seconds
+	 */
 	public static long str2time_s(String datetime, String pattern) throws ParseException {
 		SimpleDateFormat sdf = new SimpleDateFormat(pattern);
 		Date date = sdf.parse(datetime);
 		return date.getTime() / 1000;
 	}
 
-	/** "yyyy-MM-dd HH:mm:ss" */
+	/**
+	 * "yyyy-MM-dd HH:mm:ss"
+	 */
 	public static long str2time_s(String datetime) throws ParseException {
 		return str2time_s(datetime, "yyyy-MM-dd HH:mm:ss");
 	}
 
-	/** return the last monday date */
+	/**
+	 * return the last monday date
+	 */
 	public static String toWeek() {
 		Calendar cal = Calendar.getInstance();
 		cal.setFirstDayOfWeek(Calendar.MONDAY);
@@ -121,6 +137,7 @@ public final class sct {
 		return datestr;
 	}
 
+	@TargetApi(Build.VERSION_CODES.N)
 	public static String toString(long ms) {
 		int decimals = 0;
 
