@@ -4,7 +4,8 @@ android:
         - build-tools-29.0.0
         - android-29
 before_install:
-    - sudo apt-get install -y python3-pip
+    - pyenv shell 3.7.1
+    - pip3 install --upgrade pip
     # download citools scripts
     - wget https://raw.githubusercontent.com/Immueggpain/citools/master/decodebase64env.py
     - python3 decodebase64env.py "KEYSTORE" "android.jks"
@@ -13,7 +14,7 @@ after_success:
     - mv app/build/outputs/apk/release/app-release.apk app/build/outputs/apk/release/forwardproto-android-$TRAVIS_TAG.apk
 before_deploy:
     # install PyGithub
-    - sudo pip3 install PyGithub
+    - pip3 install PyGithub
     # download citools scripts
     - wget https://raw.githubusercontent.com/Immueggpain/citools/master/githubrelease.py
     - pwd
