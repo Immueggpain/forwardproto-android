@@ -6,8 +6,8 @@ android:
         - android-29
 before_install:
     - pyenv versions
-    - apt-get update
-    - apt-get install pyenv
+    - sudo apt-get update
+    - sudo apt-get install pyenv
     - pyenv install 3.7.1
     - pyenv versions
     - pip3 install --upgrade pip
