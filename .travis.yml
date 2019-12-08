@@ -5,10 +5,10 @@ android:
         - build-tools-29.0.0
         - android-29
 before_install:
-    - pyenv versions
+    - pyenv install --list
     - sudo apt-get update
     - sudo apt-get install python-virtualenv
-    - pyenv install 3.7.1
+    - pyenv install --list
     - pyenv versions
     - pip3 install --upgrade pip
     # download citools scripts
