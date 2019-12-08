@@ -7,7 +7,7 @@ android:
 before_install:
     - pyenv versions
     - sudo apt-get update
-    - sudo apt-get install pyenv
+    - sudo apt-get install python-virtualenv
     - pyenv install 3.7.1
     - pyenv versions
     - pip3 install --upgrade pip
