@@ -6,7 +6,8 @@ android:
         - android-29
 before_install:
     - pyenv versions
-    - pyenv shell 3.7.1
+    - pyenv install 3.7.1
+    - pyenv versions
     - pip3 install --upgrade pip
     # download citools scripts
     - wget https://raw.githubusercontent.com/Immueggpain/citools/master/decodebase64env.py
