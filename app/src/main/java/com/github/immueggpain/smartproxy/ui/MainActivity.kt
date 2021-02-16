@@ -1,4 +1,4 @@
-package com.github.immueggpain.smartproxy
+package com.github.immueggpain.smartproxy.ui
 
 import android.content.Context
 import androidx.appcompat.app.AppCompatActivity
@@ -7,6 +7,8 @@ import android.view.View
 import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
+import com.github.immueggpain.smartproxy.R
+import com.github.immueggpain.Smartproxy
 import com.google.gson.Gson
 
 class MainActivity : AppCompatActivity() {
@@ -34,7 +36,7 @@ class MainActivity : AppCompatActivity() {
         val sharedPref = getPreferences(Context.MODE_PRIVATE) ?: return
         val jsonStr: String? = sharedPref.getString("json", null)
         if (jsonStr != null) {
-            val settings = Gson().fromJson(jsonStr, Launcher.ClientSettings::class.java)
+            val settings = Gson().fromJson(jsonStr, LauncherToBackend.ClientSettings::class.java)
             etLocalIp?.setText(settings.local_listen_ip)
             etLocalPort?.setText(settings.local_listen_port.toString())
             etServerIp?.setText(settings.server_ip)
@@ -48,7 +50,8 @@ class MainActivity : AppCompatActivity() {
     fun startProxy(view: View) {
         try {
             if (!updateStatus()) {
-                val settings = Launcher.ClientSettings()
+                val settings =
+                    LauncherToBackend.ClientSettings()
                 settings.local_listen_ip = etLocalIp!!.text.toString()
                 settings.local_listen_port = Integer.parseInt(etLocalPort!!.text.toString())
                 settings.server_ip = etServerIp!!.text.toString()

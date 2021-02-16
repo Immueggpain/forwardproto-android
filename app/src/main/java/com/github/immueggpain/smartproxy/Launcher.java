@@ -1,30 +1,30 @@
 package com.github.immueggpain.smartproxy;
 
-import org.apache.commons.cli.CommandLine;
-import org.apache.commons.cli.DefaultParser;
-import org.apache.commons.cli.HelpFormatter;
-import org.apache.commons.cli.Option;
-import org.apache.commons.cli.Options;
-import org.apache.commons.cli.ParseException;
+import java.util.concurrent.Callable;
 
-public class Launcher {
+import com.github.immueggpain.smartproxytool.DedupUserrule;
 
-    private static final String VERSTR = "1.1.7";
+import picocli.CommandLine;
+import picocli.CommandLine.Command;
+import picocli.CommandLine.HelpCommand;
 
-    public static class ClientSettings {
-        public String local_listen_ip;
-        public int local_listen_port;
-        public String server_ip;
-        public int server_port;
-        public String password;
-        public String logfile;
-    }
+@Command(description = "Please report issues at https://github.com/Immueggpain/forwardproto/issues",
+		name = "smartproxy", mixinStandardHelpOptions = true, version = Launcher.VERSTR,
+		subcommands = { HelpCommand.class, Smartproxy.class, SmartproxyServer.class, DedupUserrule.class })
+public class Launcher implements Callable<Void> {
 
-    public static class ServerSettings {
-        public String password;
-        public int server_port;
-        public String cert;
-        public String private_key;
-    }
+	public static final String VERSTR = "2.0.5";
+
+	public static void main(String[] args) {
+		int exitCode = new CommandLine(new Launcher()).setCaseInsensitiveEnumValuesAllowed(true)
+				.setUsageHelpLongOptionsMaxWidth(40).setUsageHelpAutoWidth(true).execute(args);
+		System.exit(exitCode);
+	}
+
+	@Override
+	public Void call() throws Exception {
+		CommandLine.usage(this, System.out);
+		return null;
+	}
 
 }

@@ -1,4 +1,4 @@
-package com.github.immueggpain.smartproxy
+package com.github.immueggpain.smartproxy.ui
 
 import android.app.Application
 

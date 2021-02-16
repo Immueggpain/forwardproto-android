@@ -43,7 +43,7 @@ public class Util {
 
 	@FunctionalInterface
 	public interface RunnableE {
-		void run() throws Exception;
+		public void run() throws Exception;
 	}
 
 	public static void closeQuietly(Closeable s) {
