@@ -26,6 +26,7 @@ package com.github.immueggpain.smartproxy;
 import java.io.BufferedWriter;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -44,8 +45,6 @@ import java.net.SocketException;
 import java.net.SocketTimeoutException;
 import java.net.UnknownHostException;
 import java.nio.charset.StandardCharsets;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -70,12 +69,11 @@ import com.github.immueggpain.common.sc;
 import com.github.immueggpain.common.scmt;
 import com.github.immueggpain.common.sct;
 import com.github.immueggpain.common.sctp;
-import com.github.immueggpain.smartproxy.ui.LauncherToBackend;
 
 import picocli.CommandLine.Command;
 import picocli.CommandLine.Option;
 
-@Command(description = "Run client", name = "client", mixinStandardHelpOptions = true, version = LauncherToBackend.VERSTR)
+@Command(description = "Run client", name = "client", mixinStandardHelpOptions = true, version = Launcher.VERSTR)
 public class Smartproxy implements Callable<Void> {
 
 	@Option(names = { "-i", "--local_listen_ip" }, description = "local listening ip. default is ${DEFAULT-VALUE}")
@@ -98,7 +96,7 @@ public class Smartproxy implements Callable<Void> {
 	public String logfile = "smartproxy.log";
 
 	@Option(names = { "-r", "--local-rule" }, description = "local user.rule.")
-	public Path local_rule;
+	public File local_rule;
 
 	@Option(names = { "--debug" }, description = "enable debug code")
 	public boolean debug = false;
@@ -120,6 +118,9 @@ public class Smartproxy implements Callable<Void> {
 	@Option(names = { "--halfopen-threads" },
 			description = "how many threads is used to create half-open tunnels. default is ${DEFAULT-VALUE}.")
 	public int hopen_threads = 4;
+
+	// used in android
+	public InputStream userRuleStream;
 
 	// timeouts
 	/** client incoming socket read/write timeout */
@@ -1185,15 +1186,21 @@ public class Smartproxy implements Callable<Void> {
 	private void load_domain_nn_table() throws Exception {
 		domain_to_nn = new HashMap<>();
 		ip_to_nn = new TreeMap<>();
-		Path path = Paths.get("user.rule");
+
+		InputStream uris;
+		if (userRuleStream == null) {
+			uris = new FileInputStream("user.rule");
+		} else {
+			uris = userRuleStream;
+		}
 
 		ArrayList<String> lines = new ArrayList<>();
-		try (BOMInputStream is = new BOMInputStream(new FileInputStream(path.toFile()))) {
+		try (BOMInputStream is = new BOMInputStream(uris)) {
 			List<String> lines1 = IOUtils.readLines(is, sc.utf8);
 			lines.addAll(lines1);
 		}
 		if (local_rule != null) {
-			try (BOMInputStream is = new BOMInputStream(new FileInputStream(local_rule.toFile()))) {
+			try (BOMInputStream is = new BOMInputStream(new FileInputStream(local_rule))) {
 				List<String> lines2 = IOUtils.readLines(is, sc.utf8);
 				lines.addAll(lines2);
 			}

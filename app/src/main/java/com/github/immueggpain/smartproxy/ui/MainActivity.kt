@@ -8,7 +8,7 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
 import com.github.immueggpain.smartproxy.R
-import com.github.immueggpain.Smartproxy
+import com.github.immueggpain.smartproxy.Smartproxy
 import com.google.gson.Gson
 
 class MainActivity : AppCompatActivity() {
@@ -67,7 +67,7 @@ class MainActivity : AppCompatActivity() {
                 }
 
                 (application as MyApplication).thread = Thread(Runnable {
-                    Smartproxy(resources).run(settings)
+                    LauncherToBackend(resources).run(settings)
                 })
                 (application as MyApplication).thread!!.start()
                 updateStatus()

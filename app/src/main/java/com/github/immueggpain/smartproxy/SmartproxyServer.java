@@ -59,7 +59,7 @@ import com.github.immueggpain.smartproxy.ui.LauncherToBackend;
 import picocli.CommandLine.Command;
 import picocli.CommandLine.Option;
 
-@Command(description = "Run server", name = "server", mixinStandardHelpOptions = true, version = LauncherToBackend.VERSTR)
+@Command(description = "Run server", name = "server", mixinStandardHelpOptions = true, version = Launcher.VERSTR)
 public class SmartproxyServer implements Callable<Void> {
 
 	public static final String[] TLS_CIPHERS = new String[] { "TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256" };
