@@ -66,9 +66,9 @@ class MainActivity : AppCompatActivity() {
                     commit()
                 }
 
-                (application as MyApplication).thread = Thread(Runnable {
-                    LauncherToBackend(resources).run(settings)
-                })
+                (application as MyApplication).thread = Thread {
+                    LauncherToBackend().run(settings, resources)
+                }
                 (application as MyApplication).thread!!.start()
                 updateStatus()
             }

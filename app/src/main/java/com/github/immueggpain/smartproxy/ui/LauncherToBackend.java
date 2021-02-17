@@ -2,6 +2,8 @@ package com.github.immueggpain.smartproxy.ui;
 
 import android.content.res.Resources;
 
+import com.github.immueggpain.smartproxy.Smartproxy;
+
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.DefaultParser;
 import org.apache.commons.cli.HelpFormatter;
@@ -13,11 +15,9 @@ import org.jetbrains.annotations.Nullable;
 
 public class LauncherToBackend {
 
-	public LauncherToBackend(@Nullable Resources resources) {
-
-	}
-
-	public void run(@NotNull ClientSettings block) {
+	public void run(@NotNull ClientSettings block, Resources resources) throws Exception {
+		Smartproxy smartproxy = new Smartproxy();
+		smartproxy.call();
 	}
 
 	public static class ClientSettings {
@@ -27,13 +27,6 @@ public class LauncherToBackend {
 		public int server_port;
 		public String password;
 		public String logfile;
-	}
-
-	public static class ServerSettings {
-		public String password;
-		public int server_port;
-		public String cert;
-		public String private_key;
 	}
 
 }
