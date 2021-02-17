@@ -15,8 +15,14 @@ import org.jetbrains.annotations.Nullable;
 
 public class LauncherToBackend {
 
-	public void run(@NotNull ClientSettings block, Resources resources) throws Exception {
+	public void run(@NotNull ClientSettings settings, Resources resources) throws Exception {
 		Smartproxy smartproxy = new Smartproxy();
+		smartproxy.local_listen_ip = settings.local_listen_ip;
+		smartproxy.local_listen_port = settings.local_listen_port;
+		smartproxy.server_ip = settings.server_ip;
+		smartproxy.server_port = settings.server_port;
+		smartproxy.passwordString = settings.password;
+		smartproxy.logfile = settings.logfile;
 		smartproxy.call();
 	}
 
