@@ -2,6 +2,7 @@ package com.github.immueggpain.smartproxy.ui;
 
 import android.content.res.Resources;
 
+import com.github.immueggpain.smartproxy.R;
 import com.github.immueggpain.smartproxy.Smartproxy;
 
 import org.apache.commons.cli.CommandLine;
@@ -23,6 +24,7 @@ public class LauncherToBackend {
 		smartproxy.server_port = settings.server_port;
 		smartproxy.passwordString = settings.password;
 		smartproxy.logfile = settings.logfile;
+		smartproxy.userRuleStream = resources.openRawResource(R.raw.user);
 		smartproxy.call();
 	}
 
